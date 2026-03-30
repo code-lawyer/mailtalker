@@ -1,0 +1,42 @@
+name: Build and Release MailTalker
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger deployment strictly on pushes of tag that match v* (e.g. v1.0.0, v1.2)
+
+jobs:
+  release:
+    name: Build & Publish Release
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            platform: linux
+          - os: macos-latest
+            platform: mac
+          - os: windows-latest
+            platform: win
+            
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Development & Native Dependencies
+        run: npm ci
+
+      - name: Build Webpack Renderer Assets
+        run: npm run build
+
+      - name: Package & Publish Electron Bins via Github Releases (OS-${{ matrix.platform }})
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx electron-builder --${{ matrix.platform }} --publish always

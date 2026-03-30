@@ -21,10 +21,18 @@
       "main.js",
       "preload.js",
       "src/core/**/*",
-      "src/db/**/*"
+      "src/db/**/*",
+      "package.json"
     ],
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.social-networking"
+    },
     "win": {
-      "target": "zip"
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "target": ["AppImage", "deb"]
     }
   },
   "keywords": [],
