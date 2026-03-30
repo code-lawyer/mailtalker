@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+:root {
+  --color-base: #0C0E12;
+  --color-surface: #14171E;
+  --color-elevated: #1C2029;
+  --color-border: #252A35;
+  --color-text-primary: #E8E2D6;
+  --color-text-secondary: #7A7468;
+  --color-accent: #D4A54A;
+  --color-accent-muted: rgba(212,165,74,0.15);
+  --color-bubble-out: #1A1D26;
+  --color-bubble-in: #12141A;
+  --color-danger: #C45B4A;
+  --color-success: #5A9A6B;
+  --font-mono: "SF Mono", "Cascadia Code", "Consolas", monospace;
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+body {
+  background-color: var(--color-base);
+  color: var(--color-text-primary);
+}
+
+::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Pixel grid texture — subtle amber checkerboard evoking data encoding */
+@layer utilities {
+  .pixel-grid {
+    background-image:
+      linear-gradient(45deg, rgba(212,165,74,0.03) 25%, transparent 25%),
+      linear-gradient(-45deg, rgba(212,165,74,0.03) 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, rgba(212,165,74,0.03) 75%),
+      linear-gradient(-45deg, transparent 75%, rgba(212,165,74,0.03) 75%);
+    background-size: 4px 4px;
+    background-position: 0 0, 0 2px, 2px -2px, -2px 0px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(212,165,74,0.4);
+  }
+}
+
+/* Message send animation — blur resolve */
+@keyframes msg-resolve {
+  from { opacity: 0; filter: blur(4px); transform: translateY(4px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+.animate-resolve { animation: msg-resolve 0.3s ease-out; }
+
+/* Pulse glow — connected status (green) */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; box-shadow: 0 0 4px var(--color-success); }
+  50% { opacity: 1; box-shadow: 0 0 8px var(--color-success); }
+}
+
+/* Fast pulse — reconnecting status (amber) */
+@keyframes pulse-fast {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* Generic fade in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
